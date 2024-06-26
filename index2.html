@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Note-taking app</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A note taking application using HTML/CSS/Javascript">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.js"></script>
+  </head>
+  <style>
+  /* Global styles */
+/* Global styles */
+* {
+    box-sizing: border-box;
+
+  }
+  
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 24px 48px;
+    background-color: #F5F5F5;
+  }
+  
+  header {
+    color: #ffffff;
+    font-size: 20px;
+  }
+  
+  /* Form styles */
+  textarea {
+    display: block;
+    line-height: 1.5;
+    border-radius:10px;
+    padding: 1em;
+    color: #F5F5F5;
+  }
+  
+  textarea,
+  form select {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1),rgba(255,255,255,0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #ffffff;
+    border-radius:10px ;
+    transform: transition 0.5sease ;   
+    
+ }
+ 
+  form select, 
+  form button {
+    display: inline-block;
+    margin: 2rem 1rem 0 0;
+    height: 2rem;
+  }
+  form select {
+    text-indent: 4px;
+    width: 100px;
+  }
+  #addNoteBtn {
+    width: 7rem;
+    background-color: #080808;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: 0;
+    transition: background-color .2s ease-in-out;
+    -webkit-transition: background-color .2s ease-in-out;
+    transition: transform 0.5s ease;
+
+  }
+  
+  #addNoteBtn:hover {
+    cursor: pointer;
+    background-color: #4000ff;
+        transform: scale(1.1);
+
+  }
+  
+  
+  /* Note Styles */
+  #notes {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2rem;
+    
+  }
+  
+  .note {
+    width: 24rem;
+    height: 20rem;
+    font-size: 1.2rem;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 1.2rem 1.6rem;
+    margin: 2.4rem 2.4rem 0 0;
+    box-shadow: 0 0.9rem 1.2rem rgba(0,0,0, 0.1);
+    position: relative;
+     transition: transform 0.5s;
+     cursor: pointer;
+  }
+  .note:hover{
+     transform: translateY(-10px);
+  }
+  
+  .note-text {
+    height: 100%;
+    overflow-y: auto;
+    margin-top: 1rem;
+  }
+  
+  .note.red {
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+  }
+  
+  .note.blue {
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgb(81, 0, 255);
+  }
+  .note.green {
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgb(0, 255, 251);
+  }
+  .note.yellow {
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgb(212, 0, 255);
+  }
+  
+  .note .note-delete {
+    position: absolute;
+    width: 2rem;
+    height: 2rem;
+    top: 0.2rem;
+    right: 0.2rem;
+    border-radius: 0.4rem;
+    color: #999;
+    text-align: center;
+  }
+  
+  .note .note-hide {
+    display: none;
+  }
+  
+  .note span:hover {
+    color: #333;
+    background: #f5f5f5;
+    cursor: pointer;
+  }
+  .background-video{
+  position: fixed; 
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+  z-index: -1;      
+  background-size: cover;
+  }
+  .h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: -10px;
+    font-family: Helvetica, Arial, sans-serif;
+  }
+  .text-effect-wrapper,
+.text {
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+}
+
+.text-effect-wrapper {
+  /* Can be anything light-colored */
+  --spotlight-color: white;
+    border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+
+  /* Shimmer animation */
+  &::before {
+    animation: shimmer 5s infinite linear;
+    background: 
+      radial-gradient(circle, var(--spotlight-color), transparent 25%) 0 0 / 25% 25%,
+      radial-gradient(circle, var(--spotlight-color), black 25%) 50% 50% / 12.5% 12.5%;
+    inset-block-start: -100%;
+    inset-inline-start: -100%;
+    mix-blend-mode: color-dodge;
+    z-index: 3;
+  }
+
+  /* Extra filter to boost colors and contrast */
+  &::after {
+    backdrop-filter: blur(1px) brightness(90%) contrast(150%);
+    z-index: 4;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translate3d(50%, 50%, 0);
+  }
+}
+
+.text {
+  /* Mask colors */
+  /* Should be black and white */
+  --background-color: black;
+  --text-color: white;
+
+  /* Text color */
+  /* Can be anything */
+  --color-1: red;
+  --color-2: blue;
+
+  /* Fuzzy white outline text */
+  color: transparent;
+  text-shadow: 
+    0 0 0.02em var(--background-color), 
+    0 0 0.02em var(--text-color),
+    0 0 0.02em var(--text-color), 
+    0 0 0.02em var(--text-color);
+
+  /* Improve contrast of outline */
+  &::before {
+    backdrop-filter: blur(0.013em) brightness(400%);
+    z-index: 1;
+  }
+
+  /* Add text color */
+  &::after {
+    background: linear-gradient(45deg, var(--color-1), var(--color-2));
+    mix-blend-mode: multiply;
+    z-index: 2;
+  }
+}
+
+/* Alternative styling */
+body:has(#option-toggle:checked) {
+  & .text-effect-wrapper {
+    --spotlight-color: orange;
+    
+    &::after {
+      backdrop-filter: brightness(90%) contrast(150%);
+    }
+  }
+
+  & .text {
+    --angle: 5deg;
+    --color-1: hsl(163, 100%, 51%);
+    --color-2: hsl(295, 88%, 32%);
+    --color-3: hsl(59, 100%, 50%);
+
+    text-shadow: 
+      0 0 0.03em var(--background-color),
+      0 0 0.03em var(--text-color);
+    
+    &::before {
+      backdrop-filter: brightness(150%) contrast(200%);
+    }
+
+    &::after {
+      background: linear-gradient(var(--angle), var(--color-1), var(--color-2), var(--color-3));
+      mix-blend-mode: color-dodge;
+    }
+  } 
+}
+
+/* === Pen styling, ignore */
+
+h1 {
+  --font-size: clamp(4.25rem, 2.25rem + 13vw, 11.75rem);
+
+  font: 700 var(--font-size)/1 "Lato", sans-serif;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+
+  &:empty,
+  &:focus {
+    border: 2px dotted white;
+    border-radius: 20px;
+    min-width: 1ch;
+    outline-offset: 5px;
+  }
+}
+
+
+
+label {
+  background-color: hsl(240deg, 20%, 50%);
+  border-radius: 5px;
+  color: #fff;
+  padding: 0.5em 1em;
+  
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  
+  &:has(:checked) {
+    background-color: hsl(350deg, 60%, 50%);
+  }
+}
+
+input {
+  position: absolute;
+  opacity: 0;
+}
+.h5{
+  font-size: 30px;
+  padding-top: 40px;
+  margin-right: 1100px;
+  
+}
+
+  </style>
+  <body>
+    <div class="text-effect-wrapper">
+      <!-- The contenteditable attribute means you can type your text right on the page -->
+      <h1 class="text" contenteditable>ABDX</h1>
+    </div>
+    
+    
+    <header>
+      <h1 class="h5">This My App Note</h1>
+      <p>Create and Delete notes, with optional color tagging</p>
+    </header>
+    <form>
+      <textarea
+        name="noteTextInput"
+        id="noteTextInput"
+        cols="80"
+        rows="10"
+        placeholder="Start typing a note...">
+      </textarea>
+      <select name="formColorPicker" id="formColorPicker">
+      
+        <option value="none">Select color</option>
+        <option value="red">white</option>
+        <option value="green">purple</option>
+        <option value="blue">sky blue</option>
+        <option value="yellow">pink</option>
+      </select>
+      <button id="addNoteBtn">Add note</button>
+    </form>
+
+    <div id="notes"></div>
+    
+<video autoplay muted loop class="background-video">
+    <source src="2024-06-26 17-21-58.mp4" type="video/mp4">
+ </video>
+ 
+    <script>
+    
+    /**
+ * Initialization
+*/
+const form = {}; // form state
+form.noteText = document.querySelector('#noteTextInput');
+form.noteText.innerText = '';
+form.addButton = document.querySelector('#addNoteBtn');
+form.color = document.querySelector('#formColorPicker');
+
+// Reference the container of existing notes
+const notes = document.querySelector('#notes');
+
+/**
+ * Functions
+*/
+const addNote = () => {
+  let text = form.noteText.value;
+  let note = document.createElement('div');
+  let deleteButton = document.createElement('span');
+
+  note.classList.add('note');
+  note.classList.add(form.color.value);
+  note.innerHTML = `<div class='note-text'>${text}</div>`;
+  deleteButton.classList.add('note-delete');
+  deleteButton.innerHTML = '&times;';
+
+  note.appendChild(deleteButton);  
+
+  notes.appendChild(note);
+
+  form.noteText.value = '';
+  form.noteText.focus();
+
+  addListenerDeleteButton(deleteButton);
+}
+
+const addListenerDeleteButton = deleteButton => {
+  deleteButton.addEventListener('click', e => {
+    e.stopPropagation();      
+    deleteNote(e);
+  });
+}
+
+const deleteNote = e => {
+  let eventNote = e.target.parentNode;
+  eventNote.parentNode.removeChild(eventNote);
+}
+
+
+// Handles clicking of #addNoteBtn to create a new note
+form.addButton.addEventListener('click', e => {
+  e.preventDefault();  
+  if (form.noteText.value != '') {
+    addNote();
+  }
+})
+
+
+    </script>
+  </body>
+</html>
+
