@@ -22,7 +22,7 @@
   }
   
   body {
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: 0;
     padding: 24px 48px;
     background-color: #F5F5F5;
@@ -188,19 +188,20 @@
 
   /* Shimmer animation */
   &::before {
-    animation: shimmer 5s infinite linear;
+    animation: shimmer 0.9s infinite linear;
     background: 
-      radial-gradient(circle, var(--spotlight-color), transparent 25%) 0 0 / 25% 25%,
-      radial-gradient(circle, var(--spotlight-color), black 25%) 50% 50% / 12.5% 12.5%;
-    inset-block-start: -100%;
+      radial-gradient(circle, var(--spotlight-color), transparent 70%) 0 0 / 25% 25%,
+      radial-gradient(circle, var(--spotlight-color), black 30%) 50% 50% / 12.5% 12.5%;
+    inset-block-start: -1000%;
     inset-inline-start: -100%;
     mix-blend-mode: color-dodge;
     z-index: 3;
+    
   }
 
   /* Extra filter to boost colors and contrast */
   &::after {
-    backdrop-filter: blur(1px) brightness(90%) contrast(150%);
+    backdrop-filter: blur(1px) brightness(100%) contrast(150%);
     z-index: 4;
   }
 }
@@ -220,7 +221,7 @@
   /* Text color */
   /* Can be anything */
   --color-1: red;
-  --color-2: blue;
+  --color-2: rgb(47, 0, 255);
 
   /* Fuzzy white outline text */
   color: transparent;
@@ -256,9 +257,9 @@ body:has(#option-toggle:checked) {
 
   & .text {
     --angle: 5deg;
-    --color-1: hsl(163, 100%, 51%);
-    --color-2: hsl(295, 88%, 32%);
-    --color-3: hsl(59, 100%, 50%);
+    --color-1: hsl(205, 100%, 50%);
+    --color-2: hsl(295, 100%, 50%);
+    --color-3: hsl(42, 100%, 50%);
 
     text-shadow: 
       0 0 0.03em var(--background-color),
@@ -320,6 +321,8 @@ input {
   font-size: 30px;
   padding-top: 40px;
   margin-right: 1100px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #4000ff;
   
 }
 
@@ -347,8 +350,8 @@ input {
       
         <option value="none">Select color</option>
         <option value="red">white</option>
-        <option value="green">purple</option>
-        <option value="blue">sky blue</option>
+        <option value="green">sky blue</option>
+        <option value="blue">purple</option>
         <option value="yellow">pink</option>
       </select>
       <button id="addNoteBtn">Add note</button>
